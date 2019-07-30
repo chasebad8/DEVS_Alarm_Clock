@@ -1,9 +1,12 @@
 ### REAL TIME CADMIUM INSTALL ###
 
-Clone this repo into an empty folder
+Clone this repo into an empty folder, ensure you download the MBed submodules:
 
-Run './install.sh' to install dependencies
+> git submodule update --init --recursive
 
+Run this to install dependencies
+
+> RT-Cadmium-Blinky/install.sh
 
 ### SIMULATE MODELS ###
 
@@ -25,3 +28,8 @@ If your target platform *is not* the Nucleo-STM32F401, you will need to change t
 > cd RT-Cadmium-Blinky/top_model/
 
 > make clean; make embedded; make flash;
+
+
+
+
+### RUN MODELS ON TARGET PLATFORM ###
