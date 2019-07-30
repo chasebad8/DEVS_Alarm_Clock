@@ -29,7 +29,3 @@ If your target platform *is not* the Nucleo-STM32F401, you will need to change t
 
 > make clean; make embedded; make flash;
 
-
-
-
-### RUN MODELS ON TARGET PLATFORM ###
