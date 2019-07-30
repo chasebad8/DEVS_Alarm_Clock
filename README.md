@@ -1,4 +1,4 @@
-### ECADMIUM INSTALL ###
+### REAL TIME CADMIUM INSTALL ###
 
 Clone this repo into an empty folder
 
