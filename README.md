@@ -1,3 +1,7 @@
+### RT-Cadmium: Blinky ###
+
+See Blinky_Formal_Project_Description.docx for a complete description of the model.
+
 ### REAL TIME CADMIUM INSTALL ###
 
 Clone this repo into an empty folder, ensure you download the MBed submodules:
