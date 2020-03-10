@@ -1,10 +1,3 @@
-/**
-* By: Ben Earle and Kyle Bjornson
-* ARSLab - Carleton University
-*
-* Analog Input:
-* Model to interface with a analog Input pin for Embedded Cadmium.
-*/
 #include <iostream>
 #include <chrono>
 #include <algorithm>
@@ -27,7 +20,8 @@
 #include <cadmium/real_time/arm_mbed/io/digitalInput.hpp>
 #include <cadmium/real_time/arm_mbed/io/digitalOutput.hpp>
 
-#include "../atomics/blinky.hpp"
+#include "../atomics/lcd.hpp"
+#include "../atomics/alarm_clock.hpp"
 
 #ifdef RT_ARM_MBED
   #include "../mbed.h"
@@ -83,20 +77,25 @@ int main(int argc, char ** argv) {
   using CoupledModelPtr=std::shared_ptr<cadmium::dynamic::modeling::coupled<TIME>>;
 
   /********************************************/
-  /***************** blinky *******************/
+  /***************** Alarm Clock **************/
   /********************************************/
 
-  AtomicModelPtr blinky1 = cadmium::dynamic::translate::make_dynamic_atomic_model<Blinky, TIME>("blinky1");
+  AtomicModelPtr alarmClock = cadmium::dynamic::translate::make_dynamic_atomic_model<alarm_clock, TIME>("alarmClock"); //The alarm clock atomic
 
   /********************************************/
-  /********** DigitalInput1 *******************/
+  /********** Buttons *******************/
   /********************************************/
-  AtomicModelPtr digitalInput1 = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("digitalInput1", BUTTON1);
+  AtomicModelPtr toggleClockButton = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("toggleClockButton", BUTTON1);  //The Button Atomic
+
+  AtomicModelPtr setHour = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("setHour", D15);  //The Button Atomic
+
+  AtomicModelPtr setMin = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("setMin", D14);  //The Button Atomic
 
   /********************************************/
-  /********* DigitalOutput1 *******************/
+  /********** TM1637 Driver *******************/
   /********************************************/
-  AtomicModelPtr digitalOutput1 = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalOutput, TIME>("digitalOutput1", LED1);
+  AtomicModelPtr lcdOutput = cadmium::dynamic::translate::make_dynamic_atomic_model<LCD, TIME>("lcdOutput"); //The TM1637 Driver Atomic
+
 
 
   /************************/
@@ -104,12 +103,17 @@ int main(int argc, char ** argv) {
   /************************/
   cadmium::dynamic::modeling::Ports iports_TOP = {};
   cadmium::dynamic::modeling::Ports oports_TOP = {};
-  cadmium::dynamic::modeling::Models submodels_TOP =  {blinky1, digitalOutput1, digitalInput1};
+  cadmium::dynamic::modeling::Models submodels_TOP =  {alarmClock, toggleClockButton, lcdOutput, setHour, setMin};
   cadmium::dynamic::modeling::EICs eics_TOP = {};
   cadmium::dynamic::modeling::EOCs eocs_TOP = {};
   cadmium::dynamic::modeling::ICs ics_TOP = {
-    cadmium::dynamic::translate::make_IC<blinky_defs::dataOut, digitalOutput_defs::in>("blinky1","digitalOutput1"),
-    cadmium::dynamic::translate::make_IC<digitalInput_defs::out, blinky_defs::in>("digitalInput1", "blinky1")
+    //cadmium::dynamic::translate::make_IC<_defs::dataOut, digitalOutput_defs::in>("alarmClock","digitalOutput1"),
+    cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::in>("toggleClockButton", "alarmClock"),
+    cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::setHour>("setHour", "alarmClock"),
+    cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::setMin>("setMin", "alarmClock"),
+
+    cadmium::dynamic::translate::make_IC<alarm_clock_defs::out, LCD_defs::in>("alarmClock", "lcdOutput")
+
   };
   CoupledModelPtr TOP = std::make_shared<cadmium::dynamic::modeling::coupled<TIME>>(
     "TOP",
@@ -123,7 +127,7 @@ int main(int argc, char ** argv) {
 
   ///****************////
   cadmium::dynamic::engine::runner<NDTime, logger_top> r(TOP, {0});
-  r.run_until(NDTime("00:10:00:000"));
+  r.run_until(NDTime("10:00:00:000"));
   #ifndef RT_ARM_MBED
     return 0;
   #endif
