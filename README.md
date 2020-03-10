@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### RT-Cadmium: Blinky ###
 
 See Blinky_Formal_Project_Description.docx for a complete description of the model.
@@ -33,3 +34,7 @@ If your target platform *is not* the Nucleo-STM32F401, you will need to change t
 
 > make clean; make embedded; make flash;
 
+=======
+# DEVS_Alarm_Clock
+An alarm clock that was created through the DEVS formulism
+>>>>>>> eb48fea26f8e5ec166f96032cd294218f685c11a
