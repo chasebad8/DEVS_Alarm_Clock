@@ -19,7 +19,6 @@
 
 #include <cadmium/real_time/arm_mbed/io/digitalInput.hpp>
 #include <cadmium/real_time/arm_mbed/io/digitalOutput.hpp>
-
 #include "../atomics/lcd.hpp"
 #include "../atomics/alarm_clock.hpp"
 
@@ -27,8 +26,10 @@
   #include "../mbed.h"
 #else
   // When simulating the model it will use these files as IO in place of the pins specified.
-  const char* BUTTON1 = "./inputs/BUTTON1_In.txt";
-  const char* LED1    = "./outputs/LED1_Out.txt";
+  const char* BUTTON1 = "./inputs/BUTTON1_In.txt"; //Start & Stop the clock
+  //const char* LED1    = "./outputs/LED1_Out.txt"; //
+  const char* D15 = "./inputs/MINUTE_IN.txt";
+  const char* D14 = "./inputs/HOUR_IN.txt";
 #endif
 
 using namespace std;
@@ -50,7 +51,7 @@ int main(int argc, char ** argv) {
     // all simulation timing and I/O streams are ommited when running embedded
     auto start = hclock::now(); //to measure simulation execution time
 
-    static std::ofstream out_data("blinky_test_output.txt");
+    static std::ofstream out_data("alarm_clock_output.txt");
     struct oss_sink_provider{
       static std::ostream& sink(){
         return out_data;

@@ -1,5 +1,21 @@
+/**
+January 18 2020
+Chase Badalato
 
-#include "../TM1637_DRIVER/TM1637.h"
+
+This is an atomic model for the TM1637 7-segment display
+
+Main Functions:
+.setBrightness(*brightness*) ; TM1637_BRT0, TM1637_BRT1, ... TM1637_BRT7 #Set the brightness
+.setDisplay(bool) #Display on or off
+.cls() #Clear Screen
+.printf(char[]) #Display a character string, CANNOT be a string
+.locate(int) ; 0, 1, 2, 3 #Set the current location of the cursor
+.setIcon(*icon*) ; TM1637::COL2 #There are a few other options but this sets the colon in the middle
+
+There are many more low level functions that did not have a use for me
+**/
+
 
 #include <cadmium/modeling/ports.hpp>
 #include <cadmium/modeling/message_bag.hpp>
@@ -16,6 +32,13 @@
 #include <limits>
 #include <random>
 
+
+/******************************************************************************
+* REAL-TIME IMPLEMENTATION
+*****************************************************************************/
+#ifdef RT_ARM_MBED
+
+#include "../TM1637_DRIVER/TM1637.h"
 #if (CATALEX_TEST == 1)
 // CATALEX TM1637 4 Digit display test
 #include "../TM1637_DRIVER/Font_7Seg.h"
@@ -30,11 +53,6 @@ TM1637_CATALEX CATALEX(D8, D9, D10);  //F401
 //TM1637_CATALEX CATALEX(p6, p7);       //LPC1768
 TM1637_CATALEX CATALEX(D9, D10);      //F401     //I exclusivly use this one
 #endif
-
-/******************************************************************************
-* REAL-TIME IMPLEMENTATION
-*****************************************************************************/
-#ifdef RT_ARM_MBED
 
 #include "../mbed-os/mbed.h"
 
@@ -131,7 +149,7 @@ struct LCD_defs{
 template<typename TIME>
 class LCD : public oestream_output<string, TIME, LCD_defs>{
 public:
-    LCD() : oestream_output<struct int, TIME, LCD_defs>(LCD_FILE) {}
+    LCD() : oestream_output<string, TIME, LCD_defs>(LCD_FILE) {}
 };
 
 #endif //RT_ARM_MBED
