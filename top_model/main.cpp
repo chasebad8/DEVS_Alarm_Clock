@@ -86,7 +86,7 @@ int main(int argc, char ** argv) {
   /********************************************/
   /********** Buttons *******************/
   /********************************************/
-  AtomicModelPtr toggleClockButton = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("toggleClockButton", BUTTON1);  //The Button Atomic
+  AtomicModelPtr toggleClockButton = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME> ("toggleClockButton", BUTTON1);  //The Button Atomic
 
   AtomicModelPtr setHour = cadmium::dynamic::translate::make_dynamic_atomic_model<DigitalInput, TIME>("setHour", D15);  //The Button Atomic
 
@@ -109,6 +109,7 @@ int main(int argc, char ** argv) {
   cadmium::dynamic::modeling::EOCs eocs_TOP = {};
   cadmium::dynamic::modeling::ICs ics_TOP = {
     //cadmium::dynamic::translate::make_IC<_defs::dataOut, digitalOutput_defs::in>("alarmClock","digitalOutput1"),
+
     cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::in>("toggleClockButton", "alarmClock"),
     cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::setHour>("setHour", "alarmClock"),
     cadmium::dynamic::translate::make_IC<digitalInput_defs::out, alarm_clock_defs::setMin>("setMin", "alarmClock"),

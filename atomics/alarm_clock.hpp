@@ -70,7 +70,7 @@ public:
     state_type state;
 
     // ports definition
-    using input_ports=std::tuple<typename defs::in, typename defs::setHour, typename defs::setMin>;
+    using input_ports=std::tuple<typename defs::in, defs::setHour, defs::setMin>;
     using output_ports=std::tuple<typename defs::out>;
 
     // internal transition
