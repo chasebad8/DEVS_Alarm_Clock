@@ -1,6 +1,3 @@
-
-#include "../TM1637_DRIVER/TM1637.h"
-
 #include <cadmium/modeling/ports.hpp>
 #include <cadmium/modeling/message_bag.hpp>
 #include <limits>
@@ -15,6 +12,13 @@
 #include <algorithm>
 #include <limits>
 #include <random>
+
+
+
+#ifdef RT_ARM_MBED
+
+#include "../mbed-os/mbed.h"
+#include "../TM1637_DRIVER/TM1637.h"
 
 #if (CATALEX_TEST == 1)
 // CATALEX TM1637 4 Digit display test
@@ -34,9 +38,6 @@ TM1637_CATALEX CATALEX(D9, D10);      //F401     //I exclusivly use this one
 /******************************************************************************
 * REAL-TIME IMPLEMENTATION
 *****************************************************************************/
-#ifdef RT_ARM_MBED
-
-#include "../mbed-os/mbed.h"
 
 using namespace cadmium;
 using namespace std;
@@ -131,7 +132,7 @@ struct LCD_defs{
 template<typename TIME>
 class LCD : public oestream_output<string, TIME, LCD_defs>{
 public:
-    LCD() : oestream_output<struct int, TIME, LCD_defs>(LCD_FILE) {}
+    LCD() : oestream_output<string, TIME, LCD_defs>(LCD_FILE) {}
 };
 
 #endif //RT_ARM_MBED

@@ -28,7 +28,8 @@
 #else
   // When simulating the model it will use these files as IO in place of the pins specified.
   const char* BUTTON1 = "./inputs/BUTTON1_In.txt";
-  const char* LED1    = "./outputs/LED1_Out.txt";
+  const char* D14    = "./inputs/MINUTE_IN.txt";
+  const char* D15    = "./inputs/HOUR_IN.txt";
 #endif
 
 using namespace std;

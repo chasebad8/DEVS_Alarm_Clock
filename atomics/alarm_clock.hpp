@@ -160,17 +160,21 @@ using namespace cadmium;
 using namespace std;
 
 //Output file for LCD
-const char* LCD_FILE = "./outputs/lcd.txt";
+const char* ALARM_CLOCK_FILE = "./outputs/alarm_clock.txt";
 
 //Port definition
-struct LCD_defs{
-    struct in : public in_port<bool> {};
+struct alarm_clock_defs{
+    struct in : public in_port<bool> {}; //start / stop clock button
+    struct setHour : public in_port<bool> {}; //set hour
+    struct setMin : public in_port<bool>{}; //set min
+
+    struct out : public out_port<string> {}; //output to the display
 };
 
 template<typename TIME>
-class LCD : public oestream_output<bool, TIME, alarm_clock_defs>{
+class alarm_clock : public oestream_output<bool, TIME, alarm_clock_defs>{
 public:
-    LCD() : oestream_output<bool, TIME, alarm_clock_defs>(ALARM_CLOCK_FILE) {}
+    alarm_clock() : oestream_output<bool, TIME, alarm_clock_defs>(ALARM_CLOCK_FILE) {}
 };
 
 #endif //RT_ARM_MBED
