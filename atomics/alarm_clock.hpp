@@ -14,10 +14,6 @@
 #include <random>
 #include <stdio.h>
 
-#ifdef RT_ARM_MBED
-
-#include "../mbed.h"
-
 using namespace cadmium;
 using namespace std;
 
@@ -151,33 +147,3 @@ public:
     }
 };
 
-
-/******************************************************************************
-* SIMULATOR IMPLEMENTATION
-*****************************************************************************/
-#else
-
-#include <cadmium/io/oestream.hpp>
-
-using namespace cadmium;
-using namespace std;
-
-//Output file for LCD
-const char* ALARM_CLOCK_FILE = "./outputs/alarm_clock.txt";
-
-//Port definition
-struct alarm_clock_defs{
-    struct in : public in_port<bool> {}; //start / stop clock button
-    struct setHour : public in_port<bool> {}; //set hour
-    struct setMin : public in_port<bool>{}; //set min
-
-    struct out : public out_port<string> {}; //output to the display
-};
-
-template<typename TIME>
-class alarm_clock : public oestream_output<string, TIME, alarm_clock_defs>{
-public:
-    alarm_clock() : oestream_output<string, TIME, alarm_clock_defs>(ALARM_CLOCK_FILE) {}
-};
-
-#endif //RT_ARM_MBED
